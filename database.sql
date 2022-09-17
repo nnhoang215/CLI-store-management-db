@@ -53,7 +53,7 @@ CREATE TABLE `Order` (
   `buyerID` int NOT NULL,
   `status` varchar(50) DEFAULT NULL,
   `discount` varchar(50) DEFAULT NULL,
-  `totalAmount` int NOT NULL,
+  `totalAmount` double DEFAULT NULL,
   PRIMARY KEY (`orderID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,7 +64,7 @@ CREATE TABLE `Order` (
 
 LOCK TABLES `Order` WRITE;
 /*!40000 ALTER TABLE `Order` DISABLE KEYS */;
-INSERT INTO `Order` VALUES (1,1,'delivered','silver',100000);
+INSERT INTO `Order` VALUES (1,1,'cancelled','silver',100000);
 /*!40000 ALTER TABLE `Order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,10 +79,8 @@ CREATE TABLE `OrderDetails` (
   `orderID` int NOT NULL,
   `productID` int NOT NULL,
   `quantity` int NOT NULL,
-  PRIMARY KEY (`orderID`,`productID`),
-  KEY `productID` (`productID`),
-  CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`orderID`) REFERENCES `Order` (`orderID`),
-  CONSTRAINT `orderdetails_ibfk_2` FOREIGN KEY (`productID`) REFERENCES `Product` (`productID`)
+  UNIQUE KEY `uq_order_details` (`orderID`,`productID`),
+  KEY `productID` (`productID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -92,7 +90,7 @@ CREATE TABLE `OrderDetails` (
 
 LOCK TABLES `OrderDetails` WRITE;
 /*!40000 ALTER TABLE `OrderDetails` DISABLE KEYS */;
-INSERT INTO `OrderDetails` VALUES (1,1,2);
+INSERT INTO `OrderDetails` VALUES (1,1,2),(1,2,4);
 /*!40000 ALTER TABLE `OrderDetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +144,7 @@ CREATE TABLE `Users` (
   `userID` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `person_userID_uindex` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +153,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES ('hoang','23','hoang','123',0,'1234',0,NULL,0,'hoang@gmail.com',1),('thu','21','thu','123',0,'3333',0,NULL,1,'jjj@gmail.com',2);
+INSERT INTO `Users` VALUES ('hoang','23','hoang','123',0,'1234',0,NULL,0,'hoang@gmail.com',1),('thu','21','thu','123',0,'3333',0,NULL,1,'jjj@gmail.com',2),('Jason Nguyen','30','Admin123','@Admin123',NULL,'0934311233',0,NULL,0,'jason@gmail.com',3);
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -168,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-11 23:33:19
+-- Dump completed on 2022-09-18  1:56:34
